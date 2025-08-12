@@ -2,7 +2,8 @@
 
 Neovim plugin that adds a handy popup menu for running `ng generate` commands in Angular projects.
 
-[![demo](https://img.youtube.com/vi/17H1Ex67t3s/hqdefault.jpg)](https://www.youtube.com/embed/17H1Ex67t3s)
+https://github.com/user-attachments/assets/e279fcba-ffdc-4c93-9724-aa0005e77075
+
 
 ---
 
