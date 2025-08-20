@@ -23,15 +23,19 @@ https://github.com/user-attachments/assets/e279fcba-ffdc-4c93-9724-aa0005e77075
 ### [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 ```lua
+-- In your Neo-tree config (e.g. lua/plugins/neo-tree.lua)
 {
-  "harlamenko/ng-generate.nvim",
-  dependencies = {
+  { "harlamenko/ng-generate.nvim", dependencies = { "MunifTanjim/nui.nvim" } }, -- add this line
+  {
     "nvim-neo-tree/neo-tree.nvim",
-    "MunifTanjim/nui.nvim",
+    opts = function(_, opts)
+      local ng_generate = require("ng-generate")
+      opts = ng_generate.extend_config(vim.tbl_deep_extend("force", opts, {
+        -- your options here
+      }))
+      return opts
+    end,
   },
-  config = function()
-    require("ng-generate").setup()
-  end
 }
 ```
 
@@ -47,30 +51,25 @@ https://github.com/user-attachments/assets/e279fcba-ffdc-4c93-9724-aa0005e77075
 
 ---
 
-## ⚙️ Configuration
-
-By default, `ng-generate.nvim` maps `n` in Neo-tree’s window to open the popup.
-
-You can remap it by calling `setup()` with options:
-
-```lua
-require("ng-generate").setup({
-  keymap = "g", -- change keybinding from "n" to "g"
-})
-```
-
----
-
 ## 🛠 Manual setup without auto-mapping
 
 If you don’t want the plugin to overwrite your `n` mapping in Neo-tree,
-you can skip `setup()` and bind the command yourself:
+you can bind the command yourself:
 
 ```lua
 -- In your Neo-tree config:
-window = {
-  mappings = {
-    ["<leader>ng"] = require("ng-generate").run,
+{
+  { "harlamenko/ng-generate.nvim", dependencies = { "MunifTanjim/nui.nvim" } }, 
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    opts = {
+      window = {
+        mappings = {
+          -- ...
+          ["<leader>ng"] = function(state) require("ng-generate").run(state) end,
+        },
+      }
+    },
   },
 }
 ```

@@ -171,18 +171,26 @@ function M.run(state)
 	vim.api.nvim_win_set_cursor(pop.winid, { 3, 0 })
 end
 
---- Setup function to automatically register in neo-tree
 ---@param opts? table
 function M.setup(opts)
-	opts = opts or {}
-	local neo_tree = require("neo-tree")
-	neo_tree.setup({
-		window = {
-			mappings = {
-				["n"] = M.run,
-			},
-		},
-	})
+	vim.api.nvim_create_user_command("NgGenerate", function()
+		local neo_tree_state = require("neo-tree.sources.manager").get_state("filesystem")
+		if neo_tree_state then
+			M.run(neo_tree_state)
+		else
+			vim.notify("Neo-tree not open", vim.log.levels.WARN)
+		end
+	end, { desc = "Angular Generate" })
+end
+
+function M.extend_config(config)
+	config = config or {}
+	config.window = config.window or {}
+	config.window.mappings = config.window.mappings or {}
+
+	config.window.mappings["n"] = M.run
+
+	return config
 end
 
 return M
