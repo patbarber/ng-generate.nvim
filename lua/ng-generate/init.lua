@@ -115,7 +115,9 @@ function M.run(state)
 		end
 
 		ngcmd = ngcmd:lower()
-		local skip_import = (ngcmd == "component" or ngcmd == "directive") and "--skip-import" or ""
+		local skip_import = (ngcmd == "component" or ngcmd == "directive")
+				and "--skip-import --skip-tests --inline-style --inline-template"
+			or ""
 		local full_cmd =
 			string.format("cd %s && npx ng g %s %s %s %s", vim.fn.getcwd(), ngcmd, full_path, skip_import, opts)
 
